@@ -6,19 +6,22 @@
 	<title>cURL</title>
 </head>
 <body>
-	<a href="proses.php">Link</a>
 	<form action="" method="post">
-		<input type="text" name="keyword" placeholder="Type text here">
+		<input type="text" name="url" placeholder="Type URL Here">
 		<input type="submit" name="cari" value="Cari">	
 	</form>
 	
 	<?php
 	if(isset($_POST['cari'])) {
-		$keyword = $_POST['keyword'];
-		$ch = curl_init(); 
-		curl_setopt($ch, CURLOPT_URL, 'http://www.google.com/search?hl=en&q='.urlencode($keyword).'&btnG=Google+Search&meta='); 
-		$data = curl_exec($ch); 
-		curl_close($ch);
+		$url = $_POST['url'];
+		$curl=curl_init('http://www.dnssy.com/lookup.php?q='.$url.'&t=SOA');
+	 
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		 
+		$data=curl_exec($curl);
+		 
+		curl_close($curl);
+		
 		echo $data;
 	}
 	?>
