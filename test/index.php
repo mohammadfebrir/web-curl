@@ -12,7 +12,8 @@
 	</form>
 	
 <?php
-	function bacaHTML($url){
+if (isset($_POST['cari'])) {
+ 	function bacaHTML($url){
        // inisialisasi CURL
        $data = curl_init();
        // setting CURL
@@ -28,13 +29,14 @@
        return $hasil;
    	}
 
-   	$link = $_POST['url'];
+    $link = $_POST['url'];
 	$kodeHTML =  bacaHTML($link);
 	//SCRAPPING
     // $pecah = explode('<div class="outPut2">', $kodeHTML);
     // $pecahLagi = explode('</div>', $pecah[1]);
     //echo "<ul>".$pecahLagi[0]."</div>";
     echo $kodeHTML;
+  }
 ?>
 
 </body>
