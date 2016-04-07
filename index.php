@@ -84,7 +84,7 @@
 	<ul class="item_module">
 		<li class="module_right">
          <?php
-         error_reporting(0);
+         if (isset($_POST['cari'])) {
             function bacaHTML($url){
                // inisialisasi CURL
                $data = curl_init();
@@ -108,6 +108,7 @@
                     // $pecahLagi = explode('</div>', $pecah[1]);
             //echo "<ul>".$pecahLagi[0]."</div>";
             echo $kodeHTML;
+        }
         ?>
     </li>
 		<div class="clearfix"> </div>
