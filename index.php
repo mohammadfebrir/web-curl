@@ -32,10 +32,6 @@
 					 <div class="menu">
 						  <a class="toggleMenu" href="#"><img src="images/nav.png" alt="" /></a>
 						    <ul class="nav" id="nav">
-						    	<li class="active"><a href="index.php">Home</a></li>
-								<!--<li><a class="page-scroll" href="#Fitur">Fitur</a></li>-->
-						    	<li><a class="page-scroll" href="#Tentang">Tentang</a></li>
-						    	<li><a class="page-scroll" href="#Kontak">Kontak</a></li>
 								<div class="clearfix"></div>
 							</ul>
 							<script type="text/javascript" src="js/responsive-nav.js"></script>
@@ -69,10 +65,15 @@
 	  <div class="container_wrap">
 		<h1>Sebuah web portal yang memeriksa server domain Anda untuk DNS dan surat kesalahan umum dan menghasilkan laporan dengan penjelasan bagaimana memperbaikinya .</h1>
 		<form action="" method="post">
-			<input type="text" name="url" value="Masukan Nama Domain..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Masukan Nama Domain...';}">
+			<input type="text" name="dns" autocomplete="off" value="Masukan Nama Domain..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Masukan Nama Domain...';}">
+			<select name="tipe" class="bld">
+				<option value="whois">Whois</option>
+				<option value="dnsrep">DNS Report</option>
+			</select>
 			<div class="contact_btn">
 			   <label class="btn1 btn-2 btn-2g">
-                   <input name="cari" type="submit" id="submit" value="Cari"></label>
+                   <input name="cek" type="submit" id="submit" value="Cari">
+               </label>
 			</div>
 		</form>
 		<div class="clearfix"></div>
@@ -84,236 +85,91 @@
 	<ul class="item_module">
 		<li class="module_right">
          <?php
-         error_reporting(0);
-            function bacaHTML($url){
+		function cekdns($url){
+		// inisialisasi CURL
+    	$data = curl_init();
+    	// setting CURL
+	    curl_setopt($data, CURLOPT_RETURNTRANSFER, 1);
+	    curl_setopt($data, CURLOPT_URL, $url);
+	    curl_setopt($data, CURLOPT_HEADER, 0);
+	    // menjalankan CURL untuk membaca isi file
+	    $hasil = curl_exec($data);
+	    curl_close($data);
+	    return $hasil;
+	}
+	if (isset($_POST['cek'])) {
+		$tipe = $_POST['tipe'];
+		$dns = $_POST['dns'];
+		if ($tipe == 'dnsrep') {
+			$page = cekdns('www.intodns.com/'."$dns");
+			$regex = '/<div class="content">(.*?)<\/div>/s';
+			if ( preg_match($regex, $page, $list) ){
+			    echo '
+			    <div class="row2">
+			    <div class="col-md-8">'.$list[0].'</div>
+			    <div class="col-md-4 fix">
+			    <table width="99%">
+					<thead>
+						<tr>
+							<th>Dampak</th>
+							<th>Resiko</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Bocor</td>
+							<td>Basah</td>
+						</tr>
+					</tbody>
+			    </table>
+			    </div>
+				</div>';
+			}else { 
+			    print "Not found";
+			}
+		}else{
+			function bacaHTML($url){
                // inisialisasi CURL
                $data = curl_init();
-               // setting CURL
-               //SSL VERIFY
-               //curl_setopt($data, CURLOPT_SSL_VERIFYPEER, false);
                curl_setopt($data, CURLOPT_RETURNTRANSFER, 1);
-               curl_setopt($data, CURLOPT_URL, "http://who.cc/whois/".$_POST['url']);
-               //curl_setopt($data, CURLOPT_POST, 1);
-               //curl_setopt($data, CURLOPT_POSTFIELDS, "domain=" . $_POST['url'] . "&mode=" . $_POST['mode']);
-               // menjalankan CURL untuk membaca isi file
+               curl_setopt($data, CURLOPT_URL, "http://who.cc/whois/".$_POST['dns']);
                $hasil = curl_exec($data);
                curl_close($data);
                return $hasil;
             }
 
-            $link = $_POST['url'];
+            $link = $_POST['dns'];
             $kodeHTML =  bacaHTML($link);
-            //SCRAPPING
-            // $pecah = explode('<div class="outPut2">', $kodeHTML);
-                    // $pecahLagi = explode('</div>', $pecah[1]);
-            //echo "<ul>".$pecahLagi[0]."</div>";
-            echo $kodeHTML;
-        ?>
+            echo '
+			<div class="row2">
+				<div class="col-md-8"><h4 class="tengah">Result</h4></div>
+				<div class="col-md-2"><h4 class="tengah">Dampak</h4></div>
+				<div class="col-md-2"><h4 class="tengah">Resiko</h4></div>
+			</div>
+            <div class="row2">
+            <div class="col-md-8">'.$kodeHTML.'</div>
+            <div class="col-md-2">
+				<h3> blablablabla </h3>
+            </div>
+            <div class="col-md-2">
+				<h3> sambalabalabala </h3>
+            </div>';
+		}
+	}
+
+	?>
     </li>
 		<div class="clearfix"> </div>
 	 </ul>
   </div>
-
-<!-- Fitur Section -->
-<!--<section id="Fitur">-->
-	<!--<div class="clearfix"></div>
-	<div class="offering">
-		<h2>Fitur yang kami tawarkan</h2>
-		<h3>Examples report</h3>
-		<div class="real">
-			<h4>Fitur</h4>-->
-			<!-- 1 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>MX Lookup</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 2 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>Blacklist Check</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 3 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>DNS Lookup</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 4 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>Test Email Server</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 5 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>Reverse Lookup</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 6 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>Whois Lookup</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 7 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>DNS Check</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 8 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>SPF Record Lookup</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 9 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>DKIM Lookup</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 10 -->
-            <!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>Port Scan</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 11 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>AAAA,SRV,DNSKEY,CERT,LOC,IPSECKEY Lookup</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 12 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>Domain Health</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 13 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>What is My IP</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 14 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>ASN,ARIN,CNAME,TXT,SOA,TCP,HTTP,HTTPS Lookup</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 15 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>Ping</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 16 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>Trace</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 17 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>Email Deliverability</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>-->
-			<!-- 18 -->
-			<!--<div class="col-sm-6">
-				<ul class="service_grid">
-					<i class="s1"> </i>
-					<li class="desc1 wow fadeInRight" data-wow-delay="0.4s">
-						<p>Brand Reputation</p>
-					</li>
-					<div class="clearfix"> </div>
-				</ul>
-			</div>
-			<div class="clearfix"> </div>
-		</div>
-	</div>
-</section>-->
 
 <!-- Tentang Section -->
 <section id="Tentang" class="bg-light-gray">
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12 text-center">
-				<h2 class="section-heading">Tentang</h2>
-				<h3 class="section-subheading text-muted">Kelompok 1 KSI</h3>
+				<h2 class="section-heading">Kelompok 1</h2>
+				<h3 class="section-subheading text-muted">Keamanan Sistem Informasi (KSI 12)</h3>
 			</div>
 		</div>
 		<div class="row">
@@ -325,12 +181,13 @@
 						</div>
 						<div class="timeline-panel">
 							<div class="timeline-heading">
-								<h4>Nama   :Moch Aldy Mulya Saputra</h4>
-								<h4 class="subheading">Nim    :10112706</h4>
+								<h3>Anggota</h3>
+								<h4 class="subheading">Nim    : 10112706</h4>
+                                <h4 class="subheading">Nama   : Moch Aldy Mulya Saputra</h4>
 							</div>
-							<div class="timeline-body">
-								<p class="text-muted"></p>
-							</div>
+                            <div class="timeline-body">
+                                <p class="subheading"></p>
+                            </div>
 						</div>
 					</li>
 					<li class="timeline-inverted">
@@ -339,11 +196,12 @@
 						</div>
 						<div class="timeline-panel">
 							<div class="timeline-heading">
-								<h4>Nama   :Mohammad Febri Ramadlan</h4>
+								<h4>Anggota</h4>
 								<h4 class="subheading">Nim    : 10112695</h4>
+                                <h4 class="subheading">Nama   : Mohammad Febri Ramadlan</h4>
 							</div>
 							<div class="timeline-body">
-								<p class="text-muted"></p>
+								<p class="text-muted"</p>
 							</div>
 						</div>
 					</li>
@@ -353,8 +211,9 @@
 						</div>
 						<div class="timeline-panel">
 							<div class="timeline-heading">
-								<h4>Nama   :Loviana Mayoreta</h4>
+								<h4>Anggota</h4>
 								<h4 class="subheading">Nim    : 10112459</h4>
+                                <h4 class="subheading">Nama   : Loviana Mayoreta</h4>
 							</div>
 							<div class="timeline-body">
 								<p class="text-muted"></p>
@@ -367,8 +226,9 @@
 						</div>
 						<div class="timeline-panel">
 							<div class="timeline-heading">
-								<h4>Nama   :Gani Gunawan K</h4>
+								<h4>Anggota</h4>
 								<h4 class="subheading">Nim    : 10112429</h4>
+                                <h4 class="subheading">Nama   : Gani Gunawan Kusdiana</h4>
 							</div>
 							<div class="timeline-body">
 								<p class="text-muted"></p>
@@ -381,52 +241,21 @@
                         </div>
                         <div class="timeline-panel">
                             <div class="timeline-heading">
-                                <h4>Nama   :Rahmat Syaparudin</h4>
+                                <h4>Anggota</h4>
                                 <h4 class="subheading">Nim    : 10112747</h4>
+                                <h4 class="subheading">Nama   : Rahmat Syaparudin</h4>
                             </div>
                             <div class="timeline-body">
                                 <p class="text-muted"></p>
                             </div>
                         </div>
                     </li>
-					<li class="timeline-inverted">
-						<div class="timeline-image">
-							<h4>Be Part
-								<br>Of Our
-								<br>Story!</h4>
-						</div>
-					</li>
 				</ul>
 			</div>
 		</div>
 	</div>
 </section>
-<!-- Kontak Section -->
-<section id="Kontak">
-	<div class="contact">
-		<div class="container">
-			<h1>Kontak Kami</h1>
-			<div class="col-md-9 wow fadeInLeft" data-wow-delay="0.4s">
-				<div class="map">
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63372.402356235354!2d107.61912279999999!3d-6.917463900000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e6f8aa08188b%3A0x632d24e6061e8903!2sUNIKOM!5e0!3m2!1sid!2sid!4v1459782913643" width="400" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
 
-				</div>
-			</div>
-			<div class="col-md-3 wow fadeInRight" data-wow-delay="0.4s">
-				<address class="address">
-					<p>DNS KSI-12, <br>Unikom.</p>
-					<dl>
-						<dt></dt>
-
-						<dd>Telephone:<span> xxxxx</span></dd>
-						<dd>FAX: <span>xxxxx</span></dd>
-						<dd>E-mail:&nbsp; <a href="alldymulya@gmail.com">Kelompok1@gmail.co</a></dd>
-					</dl>
-				</address>
-			</div>
-		</div>
-	</div>
-</section>
    <div class="footer">
    	 <div class="container">
 		 <div class="footer_top">
