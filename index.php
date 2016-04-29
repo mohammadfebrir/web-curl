@@ -65,8 +65,9 @@
 	  <div class="container_wrap">
 		<h1>Sebuah web portal yang memeriksa server domain Anda untuk DNS dan surat kesalahan umum dan menghasilkan laporan dengan penjelasan bagaimana memperbaikinya .</h1>
 		<form action="" method="post">
-			<input type="text" name="dns" autocomplete="off" value="Masukan Nama Domain..." onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Masukan Nama Domain...';}">
+			<input type="text" name="dns" autocomplete="off" value="" placeholder="Masukan Nama Domain...">
 			<select name="tipe" class="bld">
+				<option value="whois">Pilih Fitur Lookup</option>
 				<option value="whois">Whois</option>
 				<option value="dnsrep">DNS Report</option>
 			</select>
@@ -108,17 +109,33 @@
 			    <div class="row2">
 			    <div class="col-md-8">'.$list[0].'</div>
 			    <div class="col-md-4 fix">
-			    <table width="99%">
+			    <table width="100%">
 					<thead>
 						<tr>
-							<th>Dampak</th>
-							<th>Resiko</th>
+							<th>Impact</th>
+							<th>Risk</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>Bocor</td>
-							<td>Basah</td>
+						<tr class="text-justify">
+							<td>
+								<ul>
+									<li>Parent: Penyerang dapat mengetahui level pada domain tertentu.</li>
+									<li>Name Server (NS): Penyerang dapat untuk mengetahui hasil terjemahan domain name tertentu ke ip address. IP address ini akan dijadikan sebagai temuan dalam pencarian informasi.</li>
+									<li>Service Oriented Architecture (SOA): Pengguna dapat mengetahui cara untuk mengatur, memanfaatkan dan mendistribusikan informasi/service dibawah domain/platform yang berbeda</li>
+									<li>Mail Record (MX): Pengguna dapat mengetahui alamat mail server yang digunakan pada domain tertentu </li>
+									<li>WWW: Komunikasi dan informasi melalui konten pada web browser yang menggunakan Hypertext Transfer Protokol dapat diganggu</li>
+								</ul>
+							</td>
+							<td>
+								<ul>
+									<li>Parent: Sistem akan diketahui lokasinya dengan cepat jika setidaknya berada di second level domains. </li>
+									<li>Name Server (NS): Alamat IP yang didapat dari Name Server (NA) ini akan dipetakan untuk keperluan serangan yang akan dilakukan berikutnya.</li>
+									<li>Service Oriented Architecture (SOA): Penyerang dapat berkomunikasi dengan menggunakan service lain untuk menghasilkan hasil baru.</li>
+									<li>Mail Record (MX): Ketika pengguna telah mengetahui alamat mail server yang digunakan pada domain tertentu, dapat dimungkinkan alamat email ini menjadi target untuk disabotase oleh penyerang </li>
+									<li>WWW: Informasi tidak tersampaikan dengan baik akibat data dan informasi tidak dapat dikirim dengan baik.</li>
+								</ul>
+							</td>
 						</tr>
 					</tbody>
 			    </table>
@@ -143,8 +160,8 @@
             echo '
 			<div class="row2 text-justify">
 				<div class="col-md-8"><h4 class="tengah"><strong>Result<strong></h4></div>
-				<div class="col-md-2"><h4 class="tengah"><strong>Dampak</strong></h4></div>
-				<div class="col-md-2"><h4 class="tengah"><strong>Resiko</strong></h4></div>
+				<div class="col-md-2"><h4 class="tengah"><strong>Impact</strong></h4></div>
+				<div class="col-md-2"><h4 class="tengah"><strong>Risk</strong></h4></div>
 			</div>
             <div class="row2">
             <div class="col-md-8">'.$kodeHTML.'</div>
