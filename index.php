@@ -141,18 +141,18 @@
             $link = $_POST['dns'];
             $kodeHTML =  bacaHTML($link);
             echo '
-			<div class="row2">
-				<div class="col-md-8"><h4 class="tengah">Result</h4></div>
-				<div class="col-md-2"><h4 class="tengah">Dampak</h4></div>
-				<div class="col-md-2"><h4 class="tengah">Resiko</h4></div>
+			<div class="row2 text-justify">
+				<div class="col-md-8"><h4 class="tengah"><strong>Result<strong></h4></div>
+				<div class="col-md-2"><h4 class="tengah"><strong>Dampak</strong></h4></div>
+				<div class="col-md-2"><h4 class="tengah"><strong>Resiko</strong></h4></div>
 			</div>
             <div class="row2">
             <div class="col-md-8">'.$kodeHTML.'</div>
-            <div class="col-md-2">
-				<h3> blablablabla </h3>
+            <div class="col-md-2 text-justify" style="padding-top: 20px;">
+				<h4>Informasi domain server dapat diketahui oleh siapapun. Mulai dari siapa pemilik Domain, dimana alamatnya, no telepon, alamat email, kapan domain ini di daftarkan dan kapan domain ini akan expired</h4>
             </div>
-            <div class="col-md-2">
-				<h3> sambalabalabala </h3>
+            <div class="col-md-2 text-justify" style="padding-top: 20px;">
+				<h4>Informasi domain server dapat didapatkan secara bebas. Jika informasi tersebut valid maka akan informasi akan sangat membantu penyerang untuk melakukan pengujian/serangan pada langkah berikutnya.</h4>
             </div>';
 		}
 	}
